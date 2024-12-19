@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Panel Results Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #007BFF;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            margin: 0 0 10px;
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .card p {
+            margin: 5px 0;
+            font-size: 1rem;
+        }
+
+        .table-container {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <div class="header">
+            <h1>Solar Panel Results Dashboard</h1>
+            <p>Location: <strong>{{ location }}</strong></p>
+        </div>
+
+        <!-- Grid Layout for Key Metrics -->
+        <div class="grid-container">
+            <div class="card">
+                <h2>Weather Information</h2>
+                <p><strong>Condition:</strong> {{ weather['weather_condition'] }}</p>
+                <p><strong>Temperature:</strong> {{ weather['temperature'] }}°C</p>
+                <p><strong>Sunlight Hours:</strong> {{ weather['sunlight_hours'] }} hrs/day</p>
+            </div>
+            <div class="card">
+                <h2>Panel Summary</h2>
+                <p><strong>Total Rooftops:</strong> {{ results['total_rooftops'] }}</p>
+                <p><strong>Total Panels:</strong> {{ results['total_panels'] }}</p>
+                <p><strong>Estimated Capacity:</strong> {{ results['total_estimated_capacity_kW'] }} kW</p>
+                <p><strong>Yearly Capacity:</strong> {{ results['total_yearly_capacity_kWh'] }} kWh</p>
+            </div>
+        </div>
+
+        <!-- Rooftop Details Table -->
+        <div class="table-container">
+            <h2>Rooftop Details</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rooftop</th>
+                        <th>Area (m²)</th>
+                        <th>Area (sqft)</th>
+                        <th>Total Panels</th>
+                        <th>Estimated Capacity (kW)</th>
+                        <th>Yearly Capacity (kWh)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for detail in results['panel_placement_details'] %}
+                    <tr>
+                        <td>{{ detail['rooftop_index'] }}</td>
+                        <td>{{ detail['rooftop_area_m2'] | round(2) }}</td>
+                        <td>{{ detail['rooftop_area_sqft'] | round(2) }}</td>
+                        <td>{{ detail['total_panels'] }}</td>
+                        <td>{{ detail['estimated_capacity_kW'] | round(2) }}</td>
+                        <td>{{ detail['yearly_capacity_kWh'] | round(2) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
